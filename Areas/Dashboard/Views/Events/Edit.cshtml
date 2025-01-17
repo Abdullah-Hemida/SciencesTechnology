@@ -1,0 +1,115 @@
+﻿@using SciencesTechnology.ViewModels.Dashboard;
+@model EventViewModel
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<h1>Edit Event</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Title -->
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3" /> </textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <!-- Organizer Selection -->
+            <div class="form-group row">
+                <div class="col-6">
+                    <label asp-for="OrganizerId" class="control-label">Organizer</label>
+                    <select asp-for="OrganizerId" class="form-control" id="OrganizerId">
+                        <option value="">Select Organizer</option>
+                        @foreach (var organizer in Model.Organizers)
+                        {
+                            <option value="@organizer.Id" data-photo="@organizer.ProfileImagePath">
+                                @organizer.FullName
+                            </option>
+                        }
+                    </select>
+                    <!-- Validation Message -->
+                    <span asp-validation-for="OrganizerId" class="text-danger"></span>
+                </div>
+                <!-- Organizer Photo Preview -->
+                <img id="organizer-photo-preview" class="col-6 mt-1 rounded" src="" alt="Organizer Photo" style="max-height: 70px; max-width:100px;border:none; border-radius:50px; display: none;" />
+            </div>
+
+            <!-- Is Online -->
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsOnline" /> @Html.DisplayNameFor(model => model.IsOnline)
+                </label>
+            </div>
+            <!-- Location -->
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="row form-group">
+                <!-- Start Date -->
+                <div class="col-6">
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" type="datetime-local" class="form-control"
+                           value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <!-- End Date -->
+                <div class="col-6">
+                    <label asp-for="EndDate" class="control-label"></label>
+                    <input asp-for="EndDate" type="datetime-local" class="form-control"
+                           value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <!-- Event Type -->
+                <div class="col-6">
+                    <label asp-for="EventType" class="control-label"></label>
+                    <select asp-for="EventType" class="form-control" asp-items="Model.EventTypes"></select>
+                    <span asp-validation-for="EventType" class="text-danger"></span>
+                </div>
+                <!-- Max Participants -->
+                <div class="col-6">
+                    <label asp-for="MaxParticipants" class="control-label"></label>
+                    <input asp-for="MaxParticipants" class="form-control" />
+                    <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Event Image (optional) -->
+            <div class="form-group">
+                <label asp-for="EventImage" class="control-label"></label>
+                <input asp-for="EventImage" type="file" class="form-control" />
+                <span asp-validation-for="EventImage" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+
+

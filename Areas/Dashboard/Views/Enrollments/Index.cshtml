@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SciencesTechnology.ViewModels.Dashboard.EnrollmentViewModel>
+
+<div class="container mt-4">
+    <h2>Enrollments</h2>
+    <table class="table table-striped table-hover table-bordered datatable">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Enrollment Date</th>
+                <th>Confirmed</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int i = 0; i< Model.Count(); i++)
+            {
+                <tr>
+                    <td>@(i+1)</td>
+                    <td>
+                        <img src="@Model.ElementAt(i).StudentImagePath" alt="Student Image" class="rounded-circle" width="40" height="40">
+                        @Model.ElementAt(i).StudentName
+                    </td>
+                    <td class="text-truncate" style="max-width: 200px;">@Model.ElementAt(i).CourseTitle</td>
+                    <td>@Model.ElementAt(i).EnrollmentDate.ToShortDateString()</td>
+                    <td>
+                        @if (@Model.ElementAt(i).IsConfirmed)
+                        {
+                            <span class="badge bg-success">Confirmed</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Pending</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!@Model.ElementAt(i).IsConfirmed)
+                        {
+                            <form asp-action="Confirm" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@Model.ElementAt(i).Id" />
+                                <button type="submit" class="btn btn-success btn-sm">Confirm</button>
+                            </form>
+                        }
+                        <form asp-action="Delete" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.ElementAt(i).Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,12 @@
+﻿@model Event
+
+<h2>@Model.Title</h2>
+@if (!string.IsNullOrEmpty(Model.EventImagePath))
+{
+    <img src="@Model.EventImagePath" alt="Event Image" width="500">
+}
+<p><strong>Date:</strong> @Model.StartDate.ToString("yyyy-MM-dd")</p>
+<p><strong>Location:</strong> @Model.Location</p>
+<p>@Model.Description</p>
+<a href="@Url.Action("Index", "Events")" class="btn btn-secondary">Back to Events</a>
+

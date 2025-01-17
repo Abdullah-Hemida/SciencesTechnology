@@ -1,0 +1,83 @@
+﻿@using SciencesTechnology.ViewModels.Dashboard
+@model CourseViewModel
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<h1>Edit Course</h1>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Title -->
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- Course Code -->
+            <div class="form-group">
+                <label asp-for="CourseCode" class="control-label"></label>
+                <input asp-for="CourseCode" class="form-control" />
+                <span asp-validation-for="CourseCode" class="text-danger"></span>
+            </div>
+
+            <!-- Credits -->
+            <div class="form-group">
+                <label asp-for="Credits" class="control-label"></label>
+                <input asp-for="Credits" class="form-control" />
+                <span asp-validation-for="Credits" class="text-danger"></span>
+            </div>
+
+            <!-- Department -->
+            <div class="form-group">
+                <label asp-for="DepartmentId" class="control-label"></label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments"></select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+
+            <!-- Dates -->
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="imageFile" class="control-label">Course Image</label>
+                <input id="imageFile" name="imageFile" type="file" class="form-control" />
+            </div>
+         
+            <div class="form-group form-check">
+                <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Back to List</a>
+</div>
+

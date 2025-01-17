@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SciencesTechnology.Models.Event>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<h1>Events</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped table-hover table-bordered datatable">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="text-nowrap">Title</th>
+            <th scope="col" class="text-nowrap">Organizer</th>
+            <th scope="col" class="text-nowrap">Created Date</th>
+            <th scope="col" class="text-nowrap">Event Type</th>
+            <th scope="col" class="text-nowrap">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="7" class="text-center">No events found</td>
+            </tr>
+        }
+        else
+        {
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td>@(i+1)</td>
+                    <td class="text-truncate" style="max-width: 200px;" title="@Model.ElementAt(i).Title">@Model.ElementAt(i).Title</td>
+                    <td>
+                        <img src="@(@Model.ElementAt(i).Organizer.ProfileImagePath != null ? @Model.ElementAt(i).Organizer.ProfileImagePath : "uploads/images/default-user.png")"
+                             alt="@Model.ElementAt(i).Organizer.FullName"
+                             class="rounded-circle"
+                             style="width: 40px; height: 40px; margin-right: 10px;" />
+                        @Model.ElementAt(i).Organizer.FullName
+                    </td>
+                    <td>@Model.ElementAt(i).CreatedDate.ToString("dd/MM/yyyy")</td>
+                    <td>@Model.ElementAt(i).EventType</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@Model.ElementAt(i).Id" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Details" asp-route-id="@Model.ElementAt(i).Id" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

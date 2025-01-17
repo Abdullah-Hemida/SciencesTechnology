@@ -1,0 +1,132 @@
+﻿@model SciencesTechnology.Models.Event
+
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<h1>Event Details</h1>
+
+<div>
+    <h4>@Model.Title</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Event Image
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.EventImagePath))
+            {
+                <img src="@Model.EventImagePath" alt="Event Image" class="img-fluid" style="max-width: 200px; max-height: 200px;" />
+            }
+            else
+            {
+                <p>No image available</p>
+            }
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Title
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Description
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Start Date
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            End Date
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Location
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Organizer
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Organizer.FullName)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Created Date
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Created By
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Is Online
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.IsOnline ? "Yes" : "No")
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Event Type
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventType)
+        </dd>
+
+        <hr/>
+
+        <dt class="col-sm-2">
+            Max Participants
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaxParticipants)
+        </dd>
+    </dl>
+
+</div>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
+

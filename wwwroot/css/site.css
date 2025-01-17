@@ -1,0 +1,42 @@
+html {
+  font-size: 14px;
+}
+@font-face {
+    font-family: 'Open Sans';
+    src: url('/Fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans Italic';
+    src: url('/Fonts/Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+
+/* Example: Apply fonts globally */
+body {
+    font-family: 'Open Sans', 'Poppins', Arial, sans-serif;
+}
+
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}

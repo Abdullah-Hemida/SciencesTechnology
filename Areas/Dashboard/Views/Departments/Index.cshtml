@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SciencesTechnology.Models.Department>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New +</a>
+</p>
+<table class="table table-striped table-hover table-bordered datatable">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Department Name</th>
+            <th>Added Date</th>
+            <th>Updated Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@Model.ElementAt(i).DepartmentName</td>
+                <td>@Model.ElementAt(i).AddedDate.ToString("dd-MM-yyyy")</td>
+                <td>@Model.ElementAt(i).UpdatedDate?.ToString("dd-MM-yyyy")</td>
+                <td>
+                    <a asp-action="Edit" class="btn btn-primary btn-sm" asp-route-id="@Model.ElementAt(i).Id">Edit</a>
+                    <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@Model.ElementAt(i).Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

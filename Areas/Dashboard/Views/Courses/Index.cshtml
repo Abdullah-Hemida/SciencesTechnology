@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SciencesTechnology.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+{
+    <p>
+        <a asp-area="Dashboard" asp-controller="Courses" asp-action="Create" class="btn btn-primary">Create New +</a>
+    </p>
+}
+
+<table class="table table-striped table-hover table-bordered datatable">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="text-nowrap">@Html.DisplayNameFor(model => model.Title)</th>
+            <th scope="col" class="text-nowrap">@Html.DisplayNameFor(model => model.AddedDate)</th>
+            <th scope="col" class="text-nowrap">@Html.DisplayNameFor(model => model.Department)</th>
+            <th scope="col" class="text-nowrap">@Html.DisplayNameFor(model => model.IsActive)</th>
+            <th scope="col" class="text-nowrap">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td>@(i + 1)</td>
+                <td class="text-truncate" style="max-width: 200px;" title="@Model.ElementAt(i).Title">
+                    @Model.ElementAt(i).Title
+                </td>
+                <td>@Model.ElementAt(i).AddedDate.ToString("dd-MM-yyyy")</td>
+                <td>@Model.ElementAt(i).Department.DepartmentName</td>
+                <td>@(Model.ElementAt(i).IsActive ? "Yes" : "No")</td>
+                <td>
+                    <a asp-action="Edit" class="btn btn-primary btn-sm" asp-route-id="@Model.ElementAt(i).Id">Edit</a>
+                    <a asp-action="Details" class="btn btn-secondary btn-sm" asp-route-id="@Model.ElementAt(i).Id">Details</a>
+                    <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@Model.ElementAt(i).Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

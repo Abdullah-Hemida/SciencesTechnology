@@ -1,0 +1,82 @@
+﻿@using SciencesTechnology.ViewModels.Dashboard
+@model CourseViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Course</h4>
+    <hr />
+
+    <img src="@Model.CourseImagePath" alt="Course Image" style="width: 200px; height: 200px; object-fit: cover;" />
+      
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Title
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Title
+        </dd>
+        <dt class = "col-sm-2">
+            Description
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Description
+        </dd>
+        <dt class = "col-sm-2">
+            Course Code
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.CourseCode
+        </dd>
+        <dt class = "col-sm-2">
+            Credits
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Credits
+        </dd>
+        <dt class = "col-sm-2">
+            Teacher Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.CreatorName
+        </dd>
+        <dt class = "col-sm-2">
+            Start date
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.StartDate.ToString("dd/MM/yyyy");
+        </dd>
+        <dt class = "col-sm-2">
+            End date
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.EndDate.ToString("dd/MM/yyyy");
+        </dd>
+        <dt class = "col-sm-2">
+            Added date
+        </dt>
+        <dd class = "col-sm-10">
+           @Model.AddedDate.ToString("dd/MM/yyyy")
+        </dd>
+        <dt class = "col-sm-2">
+             IsActive
+        </dt>
+        <dd class = "col-sm-10">
+            @(Model.IsActive ? "Yes" : "No")
+        </dd>
+        <dt class = "col-sm-2">
+            Department
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.DepartmentName
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

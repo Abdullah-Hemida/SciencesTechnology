@@ -1,0 +1,63 @@
+﻿@using SciencesTechnology.ViewModels.Dashboard
+@model IEnumerable<UserRoleViewModel>
+
+@{
+    ViewData["Title"] = "Manage User Roles";
+}
+
+<div>
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="UpdateUserRoles" method="post">
+        @Html.AntiForgeryToken()
+        <table class="table table-striped table-hover table-bordered datatable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>User Name</th>
+                    <th>Picture</th>
+                    @foreach (var role in Model.First().Roles!) // Display role names dynamically
+                    {
+                        <th>@role.RoleName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <tr>
+                        <td>@(i+1)</td>
+                        <td>@Model.ElementAt(i).UserName?.Split("@")[0]</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(@Model.ElementAt(i).ProfileImagePath))
+                            {
+                                <img src="@Model.ElementAt(i).ProfileImagePath" alt="Profile Picture" class="rounded-circle" style="width: 50px; height: 50px;" />
+                            }
+                            else
+                            {
+                                <img src="~/assets2/img/default-profile.png" alt="Default Profile Picture" class="rounded-circle" style="width: 50px; height: 50px;" />
+                            }
+                        </td>
+
+                            @foreach (var role in @Model.ElementAt(i).Roles)
+                            {
+                                <td>
+                                    <input type="checkbox"
+                                       name="roles[@Model.ElementAt(i).UserId][@role.RoleName]"
+                                    value="true"
+                                    @(role.IsSelected ? "checked" : "") />
+                                    <input type="hidden"
+                                       name="roles[@Model.ElementAt(i).UserId][@role.RoleName]"
+                                    value="false" />
+                                </td>
+                            }
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+

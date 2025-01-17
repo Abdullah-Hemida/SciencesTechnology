@@ -1,0 +1,119 @@
+﻿@model IEnumerable<SciencesTechnology.ViewModels.Website.CourseViewModel>
+<!-- Page Title -->
+<div class="page-title" data-aos="fade">
+    <div class="heading">
+        <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h1>Courses</h1>
+                    <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="breadcrumbs">
+        <div class="container">
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li class="current">Courses</li>
+            </ol>
+        </div>
+    </nav>
+</div><!-- End Page Title -->
+
+<!-- Department Filter Buttons -->
+<div class="d-flex justify-content-center mt-5">
+    <div class="btn-group" role="group">
+        <a href="/Courses" class="btn btn-success @(string.IsNullOrEmpty(Context.Request.Query["departmentId"]) ? "active" : "")">All</a>
+        @foreach (var department in (dynamic)ViewBag.Departments)
+        {
+            <a href="/Courses?departmentId=@department.Id"
+               class="btn btn-success @(Context.Request.Query["departmentId"] == department.Id ? "active" : "")">
+                @department.DepartmentName
+            </a>
+        }
+    </div>
+</div>
+
+<!-- Courses Section -->
+<section id="courses" class="courses section">
+    <div class="container">
+        <div class="row">
+            @foreach (var course in Model)
+            {
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-4" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="course-item shadow-sm">
+                        <!-- Course Image -->
+                        <a asp-area="Website" asp-action="Details" asp-controller="Courses" asp-route-id="@course.Id" class="text-dark text-decoration-none">
+                            <img src="@(!string.IsNullOrEmpty(course.CourseImagePath) ? course.CourseImagePath : "/images/default-course.jpg")"
+                             class="img-fluid rounded-top course-image" alt="Course Image" style="width: 100%; height: 180px; object-fit: cover;">
+                        </a>
+                        <!-- Course Content -->
+                        <div class="course-content p-4">
+                            <!-- Enroll Button and Price -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    @if (!User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="/Identity/Account/Login" class="btn btn-primary btn-sm">Login to Enroll</a>
+                                    }
+                                    else if (!course.IsEnrolled)
+                                    {
+                                        <a asp-area="Website" asp-action="Enroll" asp-controller="Courses" asp-route-id="@course.Id" class="btn btn-primary btn-sm">Enroll</a>
+                                    }
+                                    else if (!course.IsConfirmed)
+                                    {
+                                        <button class="btn btn-warning btn-sm" disabled>Pending</button>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Website" asp-action="Content" asp-controller="Courses" asp-route-id="@course.Id" class="btn btn-success btn-sm">Course Content</a>
+                                    }
+
+                                    <a asp-area="Website" asp-action="Details" asp-controller="Courses" asp-route-id="@course.Id" class="btn btn-secondary btn-sm">Details</a>
+                                </div>
+
+                                <p class="price text-success fw-bold">$@(course.Credits * 20)</p>
+                            </div>
+
+                            <!-- Course Title -->
+                            <h5 class="course-title">
+                                <a asp-area="Website" asp-action="Details" asp-controller="Courses" asp-route-id="@course.Id" class="text-dark text-decoration-none">
+                                    @course.Title
+                                </a>
+                            </h5>
+
+                            <!-- Course Description -->
+                            <a asp-area="Website" asp-action="Details" asp-controller="Courses" asp-route-id="@course.Id" class="text-dark text-decoration-none">
+                            <p class="description text-muted">@course.Description</p>
+                            </a>
+                            <!-- Trainer Info -->
+                            <div class="trainer d-flex justify-content-between align-items-center mt-4">
+                                <div class="trainer-profile d-flex align-items-center">
+                                    @if (course.TeacherImagePath != null)
+                                    {
+                                        <img src="@course.TeacherImagePath"
+                                             alt="Teacher Picture" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                    }
+                                    else
+                                    {
+                                        <img src="/images/default-teacher.jpg"
+                                             alt="Default Teacher Picture" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                    }
+                                    <span class="ms-2 text-dark">@course.TeacherFirstName</span>
+                                </div>
+                                <div class="trainer-stats d-flex align-items-center">
+                                    <i class="bi bi-person user-icon"></i>&nbsp;50
+                                    &nbsp;&nbsp;
+                                    <i class="bi bi-heart heart-icon"></i>&nbsp;65
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
