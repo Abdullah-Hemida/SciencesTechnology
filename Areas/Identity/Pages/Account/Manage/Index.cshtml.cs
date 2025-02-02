@@ -11,18 +11,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SciencesTechnology.Models;
 using SciencesTechnology.Services;
 
 namespace SciencesTechnology.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+    public class ManageIndexModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILocationService _locationService;
 
-        public IndexModel(
+        public ManageIndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, ILocationService locationService)
         {
@@ -62,8 +63,8 @@ namespace SciencesTechnology.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Country")]
             public string Country { get; set; }
 
-            [Display(Name = "City")]
-            public string City { get; set; }
+            [Display(Name = "State")]
+            public string State { get; set; }
 
             [Display(Name = "Address")]
             public string Address { get; set; }
@@ -83,7 +84,7 @@ namespace SciencesTechnology.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber,
                 ProfileImagePath = user.ProfileImagePath,
                 Country = user.Country,
-                City = user.City,
+                State = user.State,
                 Address = user.Address,
             };
         }
@@ -97,12 +98,37 @@ namespace SciencesTechnology.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
             var countries = await _locationService.GetCountriesAsync();
-            ViewData["Countries"] = new SelectList(countries, "Name", "Name");
+
+            // ✅ Extract country names
+            var countryNames = countries
+                .Where(c => c.Name != null)
+                .Select(c => c.Name.Common)
+                .ToList();
+
+            ViewData["Countries"] = new SelectList(countryNames);
 
             await LoadAsync(user);
             return Page();
         }
+        public async Task<PartialViewResult> OnGetStatesAsync(string country)
+        {
+            if (string.IsNullOrEmpty(country))
+            {
+                return new PartialViewResult
+                {
+                    ViewName = "_StateOptions",
+                    ViewData = new ViewDataDictionary<List<string>>(ViewData, new List<string>())
+                };
+            }
 
+            var states = await _locationService.GetStatesByCountryAsync(country);
+
+            return new PartialViewResult
+            {
+                ViewName = "_StateOptions",
+                ViewData = new ViewDataDictionary<List<string>>(ViewData, states)
+            };
+        }
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -121,7 +147,7 @@ namespace SciencesTechnology.Areas.Identity.Pages.Account.Manage
             user.LastName = Input.LastName;
             user.PhoneNumber = Input.PhoneNumber;
             user.Country = Input.Country;
-            user.City = Input.City;
+            user.State = Input.State;
             user.Address = Input.Address;
             user.LastUpdatedDate = DateTime.Now;
 

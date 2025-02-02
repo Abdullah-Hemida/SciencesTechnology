@@ -28,8 +28,8 @@ namespace SciencesTechnology.Models
         [MaxLength(100)]
         public string? Country { get; set; }
 
-        [MaxLength(100)]
-        public string? City { get; set; }
+        [Display(Name = "State")]
+        public string? State { get; set; }
 
         public string? Address { get; set; }
 

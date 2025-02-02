@@ -37,13 +37,11 @@ namespace SciencesTechnology.ViewModels.Website
         [Phone]
         public string? PhoneNumber { get; set; }
 
-        [Required]
         [Display(Name = "Country")]
         public string? Country { get; set; }
 
-        [Required]
-        [Display(Name = "City")]
-        public string? City { get; set; }
+        [Display(Name = "State")]
+        public string? State { get; set; }
 
         [Display(Name = "Address")]
         public string? Address { get; set; }

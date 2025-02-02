@@ -21,7 +21,7 @@ namespace SciencesTechnology.Mappings
                        .ForMember(dest => dest.ProfileImagePath, opt => opt.MapFrom(src => src.ProfileImagePath))
                        .ForMember(dest => dest.Credits, opt => opt.MapFrom(src => src.Credits))
                        .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
-                       .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                       .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State))
                        .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address));
         }
     }

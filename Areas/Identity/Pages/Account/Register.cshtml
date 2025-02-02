@@ -1,8 +1,6 @@
 ﻿@page
 @model SciencesTechnology.Areas.Identity.Pages.Account.RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
+
 
 <h2 class="text-center">@ViewData["Title"]</h2>
 
@@ -42,20 +40,20 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group row">
-                <div class="col-md-6">
-                    <label asp-for="Input.Country"></label>
-                    <select asp-for="Input.Country" asp-items="ViewBag.Countries" class="form-control">
-                        <option value="">-- Select Country --</option>
+                <div class="col-6">
+                    <label for="countrySelect">Country</label>
+                    <select id="countrySelect" asp-for="Input.Country" class="form-control">
+                        <option value="">Select Country</option>
                     </select>
-                    <span asp-validation-for="Input.Country" class="text-danger"></span>
                 </div>
-
-                <div class="col-md-6">
-                    <label asp-for="Input.City"></label>
-                    <input asp-for="Input.City" class="form-control" />
-                    <span asp-validation-for="Input.City" class="text-danger"></span>
+                <div class="col-6">
+                    <label for="stateSelect">State</label>
+                    <select id="stateSelect" asp-for="Input.State" class="form-control" disabled>
+                        <option value="">Select State</option>
+                    </select>
                 </div>
             </div>
+
             <div class="form-group">
                 <label asp-for="Input.Address"></label>
                 <input asp-for="Input.Address" class="form-control" />
@@ -81,6 +79,47 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        loadCountries();
 
+        document.getElementById("countrySelect").addEventListener("change", function () {
+            loadStates(this.value);
+        });
+    });
+
+    async function loadCountries() {
+        const response = await fetch("/api/location/countries");
+        const countries = await response.json();
+        const countrySelect = document.getElementById("countrySelect");
+
+        countries.forEach(country => {
+            let option = document.createElement("option");
+            option.value = country.name.common;
+            option.textContent = country.name.common;
+            countrySelect.appendChild(option);
+        });
+    }
+
+    async function loadStates(country) {
+        const stateSelect = document.getElementById("stateSelect");
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        stateSelect.disabled = true;
+
+        if (!country) return;
+
+        const response = await fetch(`/api/location/states?country=${encodeURIComponent(country)}`);
+        const states = await response.json();
+
+        states.forEach(state => {
+            let option = document.createElement("option");
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+        });
+
+        stateSelect.disabled = states.length === 0;
+    }
+</script>
 
  

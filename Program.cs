@@ -27,7 +27,9 @@ namespace SciencesTechnology
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<ILocationService, LocationService>();
+
+            builder.Services.AddHttpClient<ILocationService, LocationService>();
+
             builder.Services.AddAutoMapper(typeof(UserProfile));
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
@@ -46,7 +48,7 @@ namespace SciencesTechnology
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

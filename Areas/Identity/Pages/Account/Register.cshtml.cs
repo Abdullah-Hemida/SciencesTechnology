@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using SciencesTechnology.Models;
 using SciencesTechnology.Services;
@@ -49,9 +50,36 @@ namespace SciencesTechnology.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+            ViewData["Title"] = "Register";
             var countries = await _locationService.GetCountriesAsync();
-            ViewData["Countries"] = new SelectList(countries, "Name", "Name");
+
+            // ✅ Extract country names
+            var countryNames = countries
+                .Where(c => c.Name != null)
+                .Select(c => c.Name.Common)
+                .ToList();
+
+            ViewData["Countries"] = new SelectList(countryNames);           
+        }
+
+        public async Task<PartialViewResult> OnGetStatesAsync(string country)
+        {
+            if (string.IsNullOrEmpty(country))
+            {
+                return new PartialViewResult
+                {
+                    ViewName = "_StateOptions",
+                    ViewData = new ViewDataDictionary<List<string>>(ViewData, new List<string>())
+                };
+            }
+
+            var states = await _locationService.GetStatesByCountryAsync(country);
+
+            return new PartialViewResult
+            {
+                ViewName = "_StateOptions",
+                ViewData = new ViewDataDictionary<List<string>>(ViewData, states)
+            };
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -69,7 +97,7 @@ namespace SciencesTechnology.Areas.Identity.Pages.Account
                     LastName = Input.LastName,
                     PhoneNumber = Input.PhoneNumber,
                     Country = Input.Country,
-                    City = Input.City,
+                    State = Input.State,
                     Address = Input.Address,
                     DateOfRegistration = DateTime.UtcNow,
                     LastUpdatedDate = DateTime.UtcNow
@@ -109,7 +137,14 @@ namespace SciencesTechnology.Areas.Identity.Pages.Account
 
             // Reload countries if model validation fails
             var countries = await _locationService.GetCountriesAsync();
-            ViewData["Countries"] = new SelectList(countries, "Value", "Text");
+
+            // ✅ Extract country names
+            var countryNames = countries
+                .Where(c => c.Name != null)
+                .Select(c => c.Name.Common)
+                .ToList();
+
+            ViewData["Countries"] = new SelectList(countryNames);
 
             return Page();
         }
